@@ -1,0 +1,15 @@
+server:
+  port: ":8080"
+  env: "development"
+  limiter:
+    enabled: true
+    rps: 10
+    burst: 20
+  cors:
+    trusted_origins: []
+
+database:
+  dsn: ""
+  max_open_conns: 25
+  max_idle_conns: 25
+  max_idle_time: "15m"
