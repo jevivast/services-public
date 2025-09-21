@@ -1,0 +1,62 @@
+openapi: 3.0.3
+info:
+  title: Services Public API
+  description: API de ejemplo con arquitectura limpia. Incluye endpoints de health y consulta de factura en servicio externo.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Local
+paths:
+  /api/v1/health:
+    get:
+      summary: Health check
+      description: Verifica que el servicio esté disponible.
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: available
+                  message:
+                    type: string
+                    example: Service is healthy
+  /api/v1/factura/{idcontrato}:
+    get:
+      summary: Consultar factura por idcontrato
+      description: Consulta el servicio externo empoduitama con el id de contrato y retorna la respuesta tal cual.
+      parameters:
+        - in: path
+          name: idcontrato
+          required: true
+          schema:
+            type: string
+          description: Identificador del contrato a consultar
+      responses:
+        '200':
+          description: Respuesta del servicio externo (contenido proxy)
+          content:
+            '*/*':
+              schema:
+                type: string
+                description: Cuerpo devuelto por el servicio externo
+                example: OK
+        '400':
+          description: Parámetro idcontrato faltante
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: missing idcontrato
+        '502':
+          description: Error al comunicarse con el servicio externo
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: failed to reach external service
+components: {}
